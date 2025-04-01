@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cupla - Target</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="floating-menu">
+        <div class="logo-container">
+            <div class="logo-icon">
+                <div class="outer-circle">
+                    <div class="inner-circle"></div>
+                    <div class="inner-circle"></div>
+                </div>
+            </div>
+            <h1>Cupla</h1>
+        </div>
+        <ul class="menu-items">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#" class="active">Target</a></li>
+            <!-- Add more menu items as needed -->
+        </ul>
+    </nav>
+
+    <main class="content">
+       <!-- <h2>Target</h2>  -->
+        
+        <!-- Program Selection View -->
+        <div id="programSelectionView" class="program-selection">
+            <div class="program-header">
+                <h3>Programs</h3>
+                <button id="createProgramBtn" class="primary-button">
+                    <i class="fas fa-plus"></i> Create New Program
+                </button>
+            </div>
+            <div id="programList" class="program-list">
+                <!-- Programs will be listed here -->
+            </div>
+        </div>
+
+        <!-- Program Creation Modal -->
+        <div id="programModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>Create New Program</h3>
+                <form id="programForm">
+                    <div class="form-group">
+                        <label for="programName">Program Name</label>
+                        <input type="text" id="programName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="programDescription">Description</label>
+                        <textarea id="programDescription" rows="3"></textarea>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="button" class="secondary-button" id="cancelProgramBtn">Cancel</button>
+                        <button type="submit" class="primary-button">Create Program</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Program View with Gantt Chart -->
+        <div id="programView" class="program-view" style="display: none;">
+            <div class="sub-menu">
+                <div class="program-title">
+                    <h3 id="currentProgramName"></h3>
+                </div>
+                <ul class="menu-items">
+                    <li><button id="addTaskBtn" class="menu-button">
+                        <i class="fas fa-plus"></i> Add Task
+                    </button></li>
+                    <li><button id="backToProgramsBtn" class="menu-button">
+                        <i class="fas fa-arrow-left"></i> Back to Programs
+                    </button></li>
+                </ul>
+            </div>
+            <div class="gantt-container">
+                <div class="gantt-chart-wrapper">
+                    <div class="gantt-chart" id="ganttChart">
+                        <!-- Task markers and lines will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task Creation Modal -->
+        <div id="taskModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>Create New Task</h3>
+                <form id="taskForm">
+                    <div class="form-group">
+                        <label for="taskName">Task Name</label>
+                        <input type="text" id="taskName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDetails">Details</label>
+                        <textarea id="taskDetails" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="dueDate">Due Date</label>
+                        <input type="date" id="dueDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Color</label>
+                        <div class="color-picker">
+                            <div class="color-option" style="background-color: #FF6B6B;" data-color="#FF6B6B"></div>
+                            <div class="color-option" style="background-color: #4ECDC4;" data-color="#4ECDC4"></div>
+                            <div class="color-option" style="background-color: #45B7D1;" data-color="#45B7D1"></div>
+                            <div class="color-option" style="background-color: #96CEB4;" data-color="#96CEB4"></div>
+                            <div class="color-option" style="background-color: #FFEEAD;" data-color="#FFEEAD"></div>
+                        </div>
+                        <input type="hidden" id="selectedColor" value="#FF6B6B">
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="button" class="secondary-button" id="cancelTaskBtn">Cancel</button>
+                        <button type="submit" class="primary-button">Create Task</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="target.js"></script>
+</body>
+</html> 

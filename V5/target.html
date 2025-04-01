@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cupla - Target</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="floating-menu">
+        <div class="logo-container">
+            <div class="logo-icon">
+                <div class="outer-circle">
+                    <div class="inner-circle"></div>
+                    <div class="inner-circle"></div>
+                </div>
+            </div>
+            <h1>Cupla</h1>
+        </div>
+        <ul class="menu-items">
+            <li><a href="index.html" title="Home"><i class="fas fa-home"></i></a></li>
+            <li class="dropdown active">
+                <a href="#" class="active" title="Target"><i class="fas fa-bullseye"></i></a>
+                <ul class="dropdown-menu">
+                    <li><button id="addTaskBtn" class="menu-button" title="Add Task">
+                        <i class="fas fa-plus"></i>
+                        Add Task
+                    </button></li>
+                    <li><button id="addReportBtn" class="menu-button" title="Add Report">
+                        <i class="fas fa-file-alt"></i>
+                        Add Report
+                    </button></li>
+                    <li><button id="addProgramBtn" class="menu-button">
+                        <i class="fas fa-plus"></i>
+                        Create New Program
+                    </button></li>
+                    <li><button id="backToProgramsBtn" class="menu-button" title="Back to Programs">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Programs
+                    </button></li>
+                </ul>
+            </li>
+            <li><a href="drawingboard.html" title="Drawing Board"><i class="fas fa-pencil-ruler"></i></a></li>
+            <!-- Add more menu items as needed -->
+        </ul>
+    </nav>
+
+    <main class="content">
+       <!-- <h2>Target</h2>  -->
+        
+        <!-- Program Selection View -->
+        <div id="programSelection" class="program-selection">
+            <h2>Programs</h2>
+            <div id="programList" class="program-list">
+                <!-- Programs will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Program Creation Modal -->
+        <div id="programModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>Create New Program</h3>
+                <form id="programForm">
+                    <div class="form-group">
+                        <label for="programName">Program Name</label>
+                        <input type="text" id="programName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="programDescription">Description</label>
+                        <textarea id="programDescription" rows="3"></textarea>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="button" class="secondary-button" id="cancelProgramBtn">Cancel</button>
+                        <button type="submit" class="primary-button">Create Program</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Program View with Gantt Chart -->
+        <div id="programView" class="program-view" style="display: none;">
+            <div class="program-title">
+                <h3 id="currentProgramName"></h3>
+            </div>
+            <div class="gantt-container">
+                <div class="gantt-wrapper">
+                    <div class="gantt-chart-wrapper">
+                        <div class="gantt-chart" id="ganttChart">
+                            <!-- Task markers and lines will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task Creation Modal -->
+        <div id="taskModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>Create New Task</h3>
+                <form id="taskForm">
+                    <div class="form-group">
+                        <label for="taskName">Task Name</label>
+                        <input type="text" id="taskName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDetails">Details</label>
+                        <textarea id="taskDetails" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="dueDate">Due Date</label>
+                        <input type="date" id="dueDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Color</label>
+                        <div class="color-picker">
+                            <div class="color-option selected" data-color="#FF6B6B" style="background-color: #FF6B6B;"></div>
+                            <div class="color-option" data-color="#4ECDC4" style="background-color: #4ECDC4;"></div>
+                            <div class="color-option" data-color="#45B7D1" style="background-color: #45B7D1;"></div>
+                            <div class="color-option" data-color="#96CEB4" style="background-color: #96CEB4;"></div>
+                            <div class="color-option" data-color="#FFEEAD" style="background-color: #FFEEAD;"></div>
+                        </div>
+                        <input type="hidden" id="selectedColor" value="#FF6B6B">
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="button" class="secondary-button" id="cancelTaskBtn">Cancel</button>
+                        <button type="submit" class="primary-button">Create Task</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Report Modal -->
+        <div id="reportModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>Add Progress Report</h3>
+                <form id="reportForm">
+                    <div class="form-group">
+                        <label for="reportTitle">Title</label>
+                        <input type="text" id="reportTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskSelect">Task</label>
+                        <select id="taskSelect" required>
+                            <option value="">Choose a task...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reportPercentage">Progress Percentage</label>
+                        <input type="number" id="reportPercentage" min="0" max="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reportComment">Comment</label>
+                        <textarea id="reportComment" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="photoUpload">Photos (Optional)</label>
+                        <input type="file" id="photoUpload" accept="image/*" multiple>
+                        <div id="photoPreview" class="photo-preview"></div>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="button" class="secondary-button" id="cancelReportBtn">Cancel</button>
+                        <button type="submit" class="primary-button">Add Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="target.js"></script>
+</body>
+</html> 

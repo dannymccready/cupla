@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cupla - Resource Allocation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .content {
+            padding: 20px 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        .timeline-container {
+            display: flex;
+            overflow: hidden;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .user-column {
+            position: sticky;
+            left: 0;
+            background: white;
+            border-right: 1px solid #eee;
+            min-width: 180px;
+            z-index: 2;
+            margin-top: 70px;
+        }
+
+        .user-list {
+            padding: 20px;
+        }
+
+        .user-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-weight: 500;
+            height: 70px;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-scroll {
+            overflow-x: auto;
+            overflow-y: hidden;
+            position: relative;
+        }
+
+        .timeline-grid {
+            display: flex;
+            min-width: max-content;
+        }
+
+        .day-column {
+            min-width: 90px;
+            border-right: 1px solid #eee;
+            position: relative;
+        }
+
+        .day-header {
+            padding: 10px;
+            text-align: center;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            font-weight: 500;
+            height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .day-content {
+            padding: 10px;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .allocation-marker {
+            background-color: #2196F3;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0;
+        }
+
+        .allocation-marker:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .allocation-marker .location {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .allocation-marker .position {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        .today-column {
+            background-color: #f8f9fa;
+        }
+
+        .today-column .day-header {
+            background-color: #e3f2fd;
+            color: #2196F3;
+        }
+
+        .scroll-controls {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 3;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            pointer-events: none;
+            display: none;
+        }
+
+        .scroll-button {
+            display: none;
+        }
+
+        .form-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .allocation-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            width: 90%;
+            max-width: 500px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .allocation-form h2 {
+            margin: 0 0 20px 0;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-button:hover {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2196F3;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .primary-button,
+        .secondary-button {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .primary-button {
+            background: #2196F3;
+            color: white;
+            border: none;
+        }
+
+        .primary-button:hover {
+            background: #1976D2;
+        }
+
+        .secondary-button {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .secondary-button:hover {
+            background: #e0e0e0;
+        }
+
+        .allocation-info {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .allocation-info h3 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .allocation-info p {
+            margin: 0 0 10px 0;
+            color: #666;
+        }
+
+        .allocation-info .info-group {
+            margin-bottom: 15px;
+        }
+
+        .allocation-info .info-label {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .allocation-info .info-value {
+            color: #666;
+        }
+
+        .allocation-info .button-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .amendments-panel {
+            width: 300px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .amendments-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            background: #f8f9fa;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .amendments-header h2 {
+            margin: 0;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .amendments-list {
+            padding: 20px;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        .amendment-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+
+        .amendment-item:last-child {
+            border-bottom: none;
+        }
+
+        .amendment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: #666;
+        }
+
+        .amendment-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .amendment-date {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .amendment-changes {
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .amendment-changes span {
+            color: #2196F3;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <nav class="floating-menu">
+        <div class="logo-container">
+            <div class="logo-icon">
+                <div class="outer-circle">
+                    <div class="inner-circle"></div>
+                    <div class="inner-circle"></div>
+                </div>
+            </div>
+            <h1>Cupla</h1>
+        </div>
+        <ul class="menu-items">
+            <li><a href="index.html" title="Home"><i class="fas fa-home"></i></a></li>
+            <li><a href="target.html" title="Target"><i class="fas fa-bullseye"></i></a></li>
+            <li><a href="drawingboard.html" title="Drawing Board"><i class="fas fa-pencil-ruler"></i></a></li>
+            <li class="dropdown active">
+                <a href="#" class="active" title="Allocate"><i class="fas fa-calendar-check"></i></a>
+                <ul class="dropdown-menu">
+                    <li><button class="menu-button" onclick="showAllocationForm()" title="Make Allocation">
+                        <i class="fas fa-plus"></i>
+                        Make Allocation
+                    </button></li>
+                    <li><button class="menu-button" onclick="viewAllocations()" title="View Allocations">
+                        <i class="fas fa-list"></i>
+                        View Allocations
+                    </button></li>
+                    <li><button class="menu-button" onclick="clearAllocations()" title="Clear All">
+                        <i class="fas fa-trash"></i>
+                        Clear All
+                    </button></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <div class="amendments-panel">
+            <div class="amendments-header">
+                <h2>Amendments</h2>
+            </div>
+            <div class="amendments-list" id="amendmentsList">
+                <!-- Amendments will be added here dynamically -->
+            </div>
+        </div>
+        <div class="timeline-container">
+            <div class="user-column">
+                <div class="user-list" id="userList">
+                    <!-- Users will be added here dynamically -->
+                </div>
+            </div>
+            <div class="timeline-scroll">
+                <div class="timeline-grid" id="timelineGrid">
+                    <!-- Days will be added here dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-overlay" id="formOverlay" style="display: none;"></div>
+    <div class="allocation-form" id="allocationForm" style="display: none;">
+        <button class="close-button" onclick="hideAllocationForm()">&times;</button>
+        <h2>New Allocation</h2>
+        <form id="allocationFormElement" onsubmit="handleAllocationSubmit(event)">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" required>
+            </div>
+            <div class="form-group">
+                <label for="position">Position</label>
+                <input type="text" id="position" required>
+            </div>
+            <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" required>
+            </div>
+            <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" required>
+            </div>
+            <div class="form-group">
+                <label for="comments">Comments</label>
+                <textarea id="comments" rows="4"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="secondary-button" onclick="hideAllocationForm()">Cancel</button>
+                <button type="submit" class="primary-button">Save Allocation</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="allocation-info" id="allocationInfo">
+        <h3>Allocation Details</h3>
+        <div class="info-group">
+            <div class="info-label">Name</div>
+            <div class="info-value" id="infoName"></div>
+        </div>
+        <div class="info-group">
+            <div class="info-label">Location</div>
+            <div class="info-value" id="infoLocation"></div>
+        </div>
+        <div class="info-group">
+            <div class="info-label">Position</div>
+            <div class="info-value" id="infoPosition"></div>
+        </div>
+        <div class="info-group">
+            <div class="info-label">Date Range</div>
+            <div class="info-value" id="infoDateRange"></div>
+        </div>
+        <div class="info-group">
+            <div class="info-label">Comments</div>
+            <div class="info-value" id="infoComments"></div>
+        </div>
+        <div class="button-group">
+            <button class="secondary-button" onclick="hideAllocationInfo()">Close</button>
+            <button class="primary-button" onclick="editAllocation()">Edit</button>
+        </div>
+    </div>
+
+    <script>
+        let allocations = [];
+        let users = new Set();
+        let currentAllocation = null;
+        let amendments = [];
+
+        function showAllocationForm() {
+            document.getElementById('formOverlay').style.display = 'block';
+            document.getElementById('allocationForm').style.display = 'block';
+        }
+
+        function hideAllocationForm() {
+            document.getElementById('formOverlay').style.display = 'none';
+            document.getElementById('allocationForm').style.display = 'none';
+        }
+
+        function showAllocationInfo(allocation, date) {
+            currentAllocation = {
+                ...allocation,
+                editDate: date // Store the specific date being edited
+            };
+            document.getElementById('formOverlay').style.display = 'block';
+            document.getElementById('allocationInfo').style.display = 'block';
+            
+            // Format dates
+            const startDate = new Date(allocation.startDate);
+            const endDate = new Date(allocation.endDate);
+            const dateFormat = (date) => {
+                const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                return `${dayNames[date.getDay()]} ${date.getDate()}${getOrdinal(date.getDate())} ${monthNames[date.getMonth()]}`;
+            };
+            
+            // Update info fields
+            document.getElementById('infoName').textContent = allocation.name;
+            document.getElementById('infoLocation').textContent = allocation.location;
+            document.getElementById('infoPosition').textContent = allocation.position;
+            document.getElementById('infoDateRange').textContent = `${dateFormat(startDate)} - ${dateFormat(endDate)}`;
+            document.getElementById('infoComments').textContent = allocation.comments || 'No comments';
+        }
+
+        function hideAllocationInfo() {
+            document.getElementById('formOverlay').style.display = 'none';
+            document.getElementById('allocationInfo').style.display = 'none';
+            currentAllocation = null;
+        }
+
+        function editAllocation() {
+            if (!currentAllocation) return;
+            
+            // Fill the form with current allocation data
+            document.getElementById('name').value = currentAllocation.name;
+            document.getElementById('location').value = currentAllocation.location;
+            document.getElementById('position').value = currentAllocation.position;
+            document.getElementById('startDate').value = currentAllocation.startDate;
+            document.getElementById('endDate').value = currentAllocation.endDate;
+            document.getElementById('comments').value = currentAllocation.comments || '';
+            
+            // Show the form and hide the info box
+            hideAllocationInfo();
+            document.getElementById('allocationForm').style.display = 'block';
+        }
+
+        function addAmendment(allocation, changes) {
+            const amendment = {
+                id: Date.now(),
+                name: allocation.name,
+                date: new Date().toLocaleString(),
+                changes: changes
+            };
+            amendments.unshift(amendment); // Add to beginning of array
+            updateAmendmentsList();
+        }
+
+        function updateAmendmentsList() {
+            const amendmentsList = document.getElementById('amendmentsList');
+            amendmentsList.innerHTML = '';
+            
+            amendments.forEach(amendment => {
+                const amendmentItem = document.createElement('div');
+                amendmentItem.className = 'amendment-item';
+                amendmentItem.innerHTML = `
+                    <div class="amendment-header">
+                        <div class="amendment-name">${amendment.name}</div>
+                        <div class="amendment-date">${amendment.date}</div>
+                    </div>
+                    <div class="amendment-changes">${amendment.changes}</div>
+                `;
+                amendmentsList.appendChild(amendmentItem);
+            });
+        }
+
+        function handleAllocationSubmit(event) {
+            event.preventDefault();
+            
+            const allocation = {
+                name: document.getElementById('name').value,
+                location: document.getElementById('location').value,
+                position: document.getElementById('position').value,
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value,
+                comments: document.getElementById('comments').value
+            };
+
+            if (currentAllocation) {
+                // Update existing allocation
+                const index = allocations.findIndex(a => a === currentAllocation);
+                if (index !== -1) {
+                    // Track changes
+                    const changes = [];
+                    if (allocation.name !== currentAllocation.name) changes.push(`Name changed from "${currentAllocation.name}" to "${allocation.name}"`);
+                    if (allocation.location !== currentAllocation.location) changes.push(`Location changed from "${currentAllocation.location}" to "${allocation.location}"`);
+                    if (allocation.position !== currentAllocation.position) changes.push(`Position changed from "${currentAllocation.position}" to "${allocation.position}"`);
+                    if (allocation.startDate !== currentAllocation.startDate) changes.push(`Start date changed from "${currentAllocation.startDate}" to "${allocation.startDate}"`);
+                    if (allocation.endDate !== currentAllocation.endDate) changes.push(`End date changed from "${currentAllocation.endDate}" to "${allocation.endDate}"`);
+                    if (allocation.comments !== currentAllocation.comments) changes.push(`Comments updated`);
+                    
+                    if (changes.length > 0) {
+                        addAmendment(allocation, changes.join('<br>'));
+                    }
+                    
+                    // If we're editing a specific date, create a new allocation for that date
+                    if (currentAllocation.editDate) {
+                        // Remove the old allocation for this date
+                        allocations = allocations.filter(a => 
+                            !(a.name === currentAllocation.name && 
+                              a.location === currentAllocation.location && 
+                              a.position === currentAllocation.position && 
+                              a.startDate === currentAllocation.startDate && 
+                              a.endDate === currentAllocation.endDate && 
+                              a.comments === currentAllocation.comments)
+                        );
+                        
+                        // Add the new allocation
+                        allocations.push(allocation);
+                    } else {
+                        // Update the existing allocation
+                        allocations[index] = allocation;
+                    }
+                }
+            } else {
+                // Add new allocation
+                allocations.push(allocation);
+                users.add(allocation.name);
+            }
+
+            updateTimeline();
+            hideAllocationForm();
+            event.target.reset();
+            currentAllocation = null;
+        }
+
+        function getOrdinal(n) {
+            const s = ["th", "st", "nd", "rd"];
+            const v = n % 100;
+            return n + (s[(v - 20) % 10] || s[v] || s[0]);
+        }
+
+        function updateTimeline() {
+            const userList = document.getElementById('userList');
+            const timelineGrid = document.getElementById('timelineGrid');
+            
+            // Update user list
+            userList.innerHTML = '';
+            users.forEach(user => {
+                const userItem = document.createElement('div');
+                userItem.className = 'user-item';
+                userItem.textContent = user;
+                userList.appendChild(userItem);
+            });
+
+            // Generate dates for the next 30 days
+            const today = new Date();
+            timelineGrid.innerHTML = '';
+            
+            for (let i = 0; i < 30; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                const dateString = date.toISOString().split('T')[0];
+                const isToday = i === 0;
+
+                const dayColumn = document.createElement('div');
+                dayColumn.className = `day-column ${isToday ? 'today-column' : ''}`;
+                
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'day-header';
+                const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const dayName = dayNames[date.getDay()];
+                const monthName = monthNames[date.getMonth()];
+                const day = date.getDate();
+                const ordinal = getOrdinal(day);
+                
+                dayHeader.innerHTML = `
+                    <div style="font-size: 12px; color: #666;">${dayName}</div>
+                    <div style="font-size: 14px;">${ordinal}</div>
+                    <div style="font-size: 12px; color: #666;">${monthName}</div>
+                `;
+                
+                const dayContent = document.createElement('div');
+                dayContent.className = 'day-content';
+
+                // Create a marker for each user, even if they don't have an allocation
+                users.forEach(user => {
+                    const marker = document.createElement('div');
+                    marker.className = 'allocation-marker';
+                    
+                    // Find allocation for this user on this day
+                    const userAllocation = allocations.find(allocation => 
+                        allocation.name === user && 
+                        dateString >= allocation.startDate && 
+                        dateString <= allocation.endDate
+                    );
+
+                    if (userAllocation) {
+                        marker.textContent = userAllocation.location;
+                        marker.title = `${userAllocation.name} - ${userAllocation.position} at ${userAllocation.location}`;
+                        marker.onclick = () => showAllocationInfo(userAllocation, dateString);
+                    } else {
+                        marker.style.visibility = 'hidden';
+                    }
+                    
+                    dayContent.appendChild(marker);
+                });
+
+                dayColumn.appendChild(dayHeader);
+                dayColumn.appendChild(dayContent);
+                timelineGrid.appendChild(dayColumn);
+            }
+        }
+
+        function viewAllocations() {
+            // TODO: Implement view all allocations functionality
+            alert('View all allocations feature coming soon!');
+        }
+
+        function clearAllocations() {
+            if (confirm('Are you sure you want to clear all allocations?')) {
+                allocations = [];
+                users.clear();
+                amendments = [];
+                updateTimeline();
+                updateAmendmentsList();
+            }
+        }
+
+        // Initialize timeline
+        updateTimeline();
+    </script>
+</body>
+</html> 

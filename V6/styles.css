@@ -1,0 +1,1454 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f5f5f5;
+}
+
+.floating-menu {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    z-index: 9994;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-container h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    position: relative;
+}
+
+.outer-circle {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #333;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inner-circle {
+    width: 8px;
+    height: 8px;
+    background-color: #333;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.inner-circle:first-child {
+    top: 25%;
+    left: 25%;
+}
+
+.inner-circle:last-child {
+    bottom: 25%;
+    right: 25%;
+}
+
+.menu-items {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-items a {
+    text-decoration: none;
+    color: #666;
+    padding: 12px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    position: relative;
+}
+
+.menu-items a:hover:not(.active) {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.menu-items a.active {
+    background-color: #333;
+    color: white;
+    pointer-events: none;
+}
+
+.menu-items a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid #333;
+}
+
+.menu-items a i {
+    font-size: 18px;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    flex-direction: row;
+    gap: 8px;
+    background: white;
+    border-radius: 25px;
+    padding: 8px 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    list-style: none;
+    min-width: auto;
+}
+
+.dropdown.active .dropdown-menu {
+    display: flex;
+}
+
+.dropdown-menu li {
+    margin: 0;
+    padding: 0;
+    width: auto;
+}
+
+.dropdown-menu button {
+    width: auto;
+    min-width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    border: none;
+    background: #f8f9fa;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    transition: all 0.3s ease;
+    gap: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.dropdown-menu button:hover {
+    background: #e9ecef;
+    transform: translateX(-2px);
+}
+
+.dropdown-menu button.selected {
+    background: #333;
+    color: white;
+    transform: translateX(-2px);
+}
+
+.dropdown-menu button.selected:hover {
+    background: #444;
+}
+
+.dropdown-menu button i {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+/* Remove the old dropdown positioning */
+.dropdown {
+    position: relative;
+}
+
+.dropdown > a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.dropdown > a:hover {
+    background: #f8f9fa;
+}
+
+.dropdown > a i {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+}
+
+.dropdown.active > a i {
+    transform: rotate(180deg);
+}
+
+/* Adjust content margin to account for dropdown */
+.content {
+    margin-top: 160px;
+    padding: 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Target App Specific Styles */
+.gantt-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    position: relative;
+    min-height: 400px;
+    overflow: hidden;
+    width: 100%;
+    z-index: 1;
+}
+
+.gantt-chart-wrapper {
+    position: relative;
+    width: 100%;
+    overflow-x: auto;
+    background-color: #f8f8f8;
+    display: flex;
+}
+
+.gantt-chart {
+    position: relative;
+    height: auto;
+    min-height: 300px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: visible;
+    margin-bottom: 20px;
+    padding: 60px 0 20px;
+    width: 1400px; /* Fixed width for 14 days (100px per day) */
+}
+
+.day-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #ddd;
+    z-index: 0;
+}
+
+.day-line::after {
+    content: attr(data-date);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f8f8f8;
+    padding: 4px 0;
+    font-size: 12px;
+    color: #666;
+    white-space: nowrap;
+}
+
+.task-row {
+    position: relative;
+    height: 80px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    min-width: 100%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+}
+
+.task-row:last-child {
+    border-bottom: none;
+}
+
+.task-marker {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.task-marker:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.task-marker.due-date {
+    width: 36px;
+    height: 36px;
+    border-width: 3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.task-marker.due-date:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-width: 4px;
+}
+
+.task-line {
+    position: absolute;
+    height: 4px;
+    background-color: currentColor;
+    transform: translateY(-50%);
+    border-radius: 2px;
+    top: 50%;
+}
+
+.date-marker {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #666;
+    white-space: nowrap;
+    padding: 4px 0;
+    background-color: #f8f8f8;
+    z-index: 1;
+}
+
+.current-day-marker {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #333;
+    z-index: 2;
+}
+
+.current-day-marker::after {
+    content: 'Today';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.task-label {
+    position: relative;
+    background-color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    width: 100%;
+    text-align: right;
+    z-index: 2;
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+    transform: none;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* Button Styles */
+.primary-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.primary-button:hover {
+    background-color: #444;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.primary-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.secondary-button {
+    background-color: white;
+    color: #333;
+    border: 2px solid #ddd;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.secondary-button:hover {
+    background-color: #f8f8f8;
+    border-color: #ccc;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.secondary-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.floating-add-button {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    background-color: #333;
+    color: white;
+    border: none;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 9995;
+}
+
+.floating-add-button:hover {
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    background-color: #444;
+}
+
+.floating-add-button:active {
+    transform: scale(0.95) translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.floating-add-button i {
+    margin: 0;
+    line-height: 1;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+}
+
+/* Program Management Styles */
+.program-selection {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.program-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.program-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.program-card {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.program-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.program-card h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.program-card p {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9997;
+}
+
+.modal[style*="display: flex"] {
+    display: flex !important;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.modal[style*="display: flex"] .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modal-content h3 {
+    margin-bottom: 24px;
+    color: #333;
+    font-size: 24px;
+}
+
+.empty-state {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #666;
+    font-size: 16px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom scrollbar styles */
+.gantt-chart-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.gantt-chart-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.gantt-chart-wrapper::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.gantt-chart-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.sub-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: white;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.program-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.menu-button:hover {
+    background-color: #f0f0f0;
+    color: #333;
+    transform: translateY(-1px);
+}
+
+.menu-button:active {
+    transform: translateY(0);
+}
+
+.menu-button i {
+    font-size: 18px;
+}
+
+/* Style for buttons with text */
+.menu-button span {
+    margin-left: 8px;
+    font-size: 14px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    background-color: #f8f8f8;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #333;
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #999;
+}
+
+.color-picker {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.color-option {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.color-option.selected {
+    border-color: #333;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    background-color: #f8f8f8;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.763L10.825 4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #333;
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.1);
+}
+
+.photo-upload-container {
+    margin-top: 8px;
+}
+
+.photo-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.photo-preview-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.photo-preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-preview-item .remove-photo {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.photo-preview-item .remove-photo:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.photo-upload-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: #f8f8f8;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.photo-upload-button:hover {
+    background-color: #f0f0f0;
+    border-color: #ccc;
+}
+
+.photo-upload-button i {
+    font-size: 16px;
+    color: #666;
+}
+
+/* Report Marker Styles */
+.report-marker {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    background-color: #333;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 3;
+}
+
+.report-marker::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.report-marker:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.report-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    width: 900px;
+    height: 500px;
+    z-index: 9996;
+    display: flex;
+    flex-direction: column;
+}
+
+.report-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    background: #f8f9fa;
+    border-radius: 12px 12px 0 0;
+}
+
+.report-tab {
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 20px;
+    color: #666;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.report-tab.active {
+    background: #333;
+    color: white;
+}
+
+.report-content {
+    display: none;
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(500px - 120px);
+}
+
+.report-content.active {
+    display: block;
+}
+
+.report-date {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.report-content h4 {
+    margin: 0 0 12px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.report-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    width: fit-content;
+}
+
+.report-content p {
+    margin: 0 0 16px 0;
+    color: #666;
+    line-height: 1.5;
+}
+
+.report-photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.report-photo {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.report-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.report-popup .modal-buttons {
+    padding: 12px 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    background: #f8f9fa;
+    border-radius: 0 0 12px 12px;
+}
+
+/* Program View */
+#programView {
+    position: relative;
+    z-index: 1;
+}
+
+/* Floating Menu */
+.floating-menu {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    z-index: 9994;
+}
+
+.program-stats {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stats-row {
+    display: flex;
+    gap: 15px;
+    color: #666;
+    font-size: 14px;
+}
+
+.stats-row span {
+    background-color: #f0f0f0;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* Update task labels container */
+.task-labels-container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: white;
+    padding: 60px 20px 20px;
+    width: 120px;
+    min-height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+/* Tool Menu */
+.tool-menu {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    border-radius: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 280px;
+    z-index: 9998;
+    display: none;
+}
+
+.tool-menu.active {
+    display: block;
+}
+
+.tool-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.tool-menu-header h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.tool-menu-content {
+    padding: 15px;
+}
+
+/* Update primary button styles to match submenu */
+.tool-menu .primary-button {
+    width: 100%;
+    height: 36px;
+    border-radius: 18px;
+    border: none;
+    background: #f8f9fa;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    transition: all 0.3s ease;
+    gap: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+    margin-bottom: 8px;
+}
+
+.tool-menu .primary-button:hover {
+    background: #e9ecef;
+    transform: translateX(-2px);
+}
+
+.tool-menu .primary-button:active {
+    transform: translateX(0);
+}
+
+.tool-menu .primary-button i {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+/* Update measure info styles */
+.measure-info {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-label {
+    color: #666;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.info-value {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.info-unit {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Update area controls styles */
+.area-controls {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.area-result {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Update item list styles */
+.item-list {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.item-card {
+    background-color: #f8f9fa;
+    border-radius: 18px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+/* Update overlay list styles */
+.overlay-list {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.overlay-card {
+    background-color: #f8f9fa;
+    border-radius: 18px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+/* Update overlay controls styles */
+.overlay-controls {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.overlay-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.overlay-buttons .primary-button {
+    flex: 1;
+    height: 36px;
+    border-radius: 18px;
+    font-size: 14px;
+}
+
+/* Take Off Marker */
+.take-off-marker {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 3;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translate(-50%, -50%);
+}
+
+.take-off-marker:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.marker-tooltip {
+    position: absolute;
+    background: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #333;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.take-off-marker:hover .marker-tooltip {
+    opacity: 1;
+}
+
+/* Overlay Tool Menu */
+.overlay-list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.overlay-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.overlay-card:hover {
+    background-color: #f0f0f0;
+    transform: translateX(-2px);
+}
+
+.overlay-card.selected {
+    background-color: #e9ecef;
+    border-color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.overlay-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.overlay-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e9ecef;
+    border-radius: 6px;
+    color: #dc3545;
+}
+
+.overlay-name {
+    font-weight: 500;
+    color: #666;
+}
+
+.overlay-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s ease;
+}
+
+.icon-button:hover {
+    color: #333;
+}
+
+.icon-button.toggle-overlay:hover {
+    color: #28a745;
+}
+
+.icon-button.remove-overlay:hover {
+    color: #dc3545;
+}
+
+.overlay-controls {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.overlay-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.overlay-buttons .primary-button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Measure Tool Menu */
+.measure-info {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.info-value {
+    font-weight: 600;
+    color: #333;
+}
+
+.info-unit {
+    color: #666;
+    font-size: 0.9em;
+}
+
+/* Measure Markers */
+.measure-marker {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 3;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translate(-50%, -50%);
+    background-color: #007bff;
+}
+
+.measure-marker:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.measure-line {
+    position: absolute;
+    height: 2px;
+    background-color: #007bff;
+    z-index: 9;
+    pointer-events: none;
+}
+
+.measure-distance {
+    position: absolute;
+    background: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #333;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Area Measurement Styles */
+.area-line {
+    position: absolute;
+    height: 2px;
+    background-color: #28a745;
+    z-index: 9;
+    pointer-events: none;
+}
+
+.area-polygon {
+    position: absolute;
+    background-color: rgba(40, 167, 69, 0.1);
+    border: 2px solid #28a745;
+    pointer-events: none;
+}
+
+.area-controls {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.area-result {
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.area-result .info-value {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.area-result .info-unit {
+    color: #28a745;
+} 

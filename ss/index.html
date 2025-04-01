@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cupla - Free Toolkit</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .hero-section {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+            margin-bottom: 40px;
+        }
+
+        .hero-section h1 {
+            font-size: 48px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .hero-section p {
+            font-size: 20px;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        .features-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .updates-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .updates-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .updates-list {
+            list-style: none;
+        }
+
+        .updates-list li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .updates-list li:last-child {
+            border-bottom: none;
+        }
+
+        .updates-list i {
+            color: #333;
+            font-size: 20px;
+        }
+
+        .updates-list p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 40px;
+            background: #333;
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .cta-section h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .feedback-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .feedback-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .feedback-section p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-menu">
+        <div class="logo-container">
+            <div class="logo-icon">
+                <div class="outer-circle">
+                    <div class="inner-circle"></div>
+                    <div class="inner-circle"></div>
+                </div>
+            </div>
+            <h1>Cupla</h1>
+        </div>
+        <ul class="menu-items">
+            <li><a href="#" class="active" title="Home"><i class="fas fa-home"></i></a></li>
+            <li><a href="target.html" title="Target"><i class="fas fa-bullseye"></i></a></li>
+            <li><a href="drawingboard.html" title="Drawing Board"><i class="fas fa-pencil-ruler"></i></a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="hero-section">
+            <h1>Welcome to Cupla</h1>
+            <p>A free toolkit designed to help you manage your projects and tasks more effectively. We're continuously working to make it better and more useful for everyone.</p>
+        </div>
+
+        <div class="features-section">
+            <div class="feature-card">
+                <i class="fas fa-tasks"></i>
+                <h3>Task Management</h3>
+                <p>Organize and track your tasks with our intuitive Gantt chart view. Set deadlines, add details, and monitor progress all in one place.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-project-diagram"></i>
+                <h3>Program Organization</h3>
+                <p>Create and manage multiple programs to keep your projects organized. Group related tasks and track them separately.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Visual Planning</h3>
+                <p>Get a clear visual overview of your tasks and deadlines. Plan your work effectively with our timeline-based interface.</p>
+            </div>
+            <div class="app-card" onclick="window.location.href='target.html'">
+                <i class="fas fa-tasks"></i>
+                <h3>Task Manager</h3>
+                <p>Track and manage your tasks with a visual timeline</p>
+            </div>
+            <div class="app-card" onclick="window.location.href='drawingboard.html'">
+                <i class="fas fa-drafting-compass"></i>
+                <h3>Drawing Board</h3>
+                <p>Compare and analyze PDF documents with revision tools</p>
+            </div>
+        </div>
+
+        <div class="updates-section">
+            <h2>Recent Updates</h2>
+            <ul class="updates-list">
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <p>Added Gantt chart view for better task visualization</p>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <p>Implemented program management functionality</p>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <p>Added task details and color coding</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="cta-section">
+            <h2>Try It Out</h2>
+            <p>Start using our tools today and see how they can help you manage your projects better.</p>
+            <a href="target.html" class="primary-button">
+                <i class="fas fa-arrow-right"></i>
+                Get Started
+            </a>
+        </div>
+
+        <div class="feedback-section">
+            <h2>Help Us Improve</h2>
+            <p>We're constantly working to make Cupla better. Your feedback helps us understand what features would be most useful for you.</p>
+            <p>Feel free to try out our tools and let us know what you think!</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
